@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Java OOP Project Quiz</title>
+<style>
+:root{--ink:#172033;--blue:#2457d6;--pale:#eef3ff;--green:#16834a;--red:#c0392b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eef3ff,#f9fbff);color:var(--ink);min-height:100vh;padding:22px}
+.wrap{max-width:760px;margin:0 auto}.hero{background:#172b58;color:white;border-radius:20px;padding:26px 24px;margin-bottom:18px}
+.kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#cbd8ff;font-weight:bold}.hero h1{margin:8px 0;font-size:clamp(1.6rem,5vw,2.3rem)}.hero p{margin:8px 0 0;line-height:1.5;color:#e6ecff}
+.panel{background:white;border:1px solid #e0e7f5;border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 6px 22px #233b6810}
+.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;color:#53617b;font-size:.92rem}.track{height:8px;background:#e8edf8;border-radius:99px;overflow:hidden;margin:12px 0 20px}.fill{height:100%;width:0;background:var(--blue);transition:width .2s}
+h2{font-size:1.2rem;line-height:1.45;margin:0 0 16px}.options{display:grid;gap:10px}.opt{display:flex;gap:11px;align-items:flex-start;text-align:left;border:1px solid #d8e0ef;background:white;border-radius:12px;padding:13px 14px;font-size:1rem;line-height:1.35;color:var(--ink);cursor:pointer}.opt:hover{border-color:var(--blue);background:#f7f9ff}.opt.selected{border-color:var(--blue);background:var(--pale)}.opt.correct{border-color:#69bd8e;background:#effaf3}.opt.wrong{border-color:#e79b95;background:#fff2f1}.letter{font-weight:bold;color:var(--blue);min-width:20px}
+.controls{display:flex;justify-content:space-between;gap:12px;margin-top:20px}button{border:0;border-radius:11px;padding:12px 18px;font-size:1rem;font-weight:bold;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#edf1f8;color:#26334c}.primary:disabled{opacity:.45;cursor:not-allowed}.feedback{margin-top:14px;padding:12px;border-radius:10px;line-height:1.45}.feedback.good{background:#effaf3;color:#17643a}.feedback.bad{background:#fff2f1;color:#8b2820}.hidden{display:none}.result{text-align:center}.score{font-size:3rem;font-weight:800;color:var(--blue);margin:12px}.small{font-size:.9rem;color:#596780;line-height:1.5}.review{text-align:left;margin-top:18px}.review li{margin:10px 0;line-height:1.45}.footer{text-align:center;color:#64718a;font-size:.8rem;padding:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><div class="kicker">Java • Semester Project</div><h1>Core OOP Foundations</h1><p>Test your understanding of <b>Encapsulation, Abstraction, and Dynamic Message Passing</b>. Choose one answer for each question and see your score at the end.</p></header>
+<section id="quiz" class="panel">
+<div class="topline"><span id="topic">Question 1 of 10</span><span id="answered">0 answered</span></div>
+<div class="track"><div id="fill" class="fill"></div></div>
+<h2 id="question"></h2><div id="options" class="options"></div><div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<div class="controls"><button id="prev" class="secondary">Previous</button><button id="next" class="primary" disabled>Next question</button></div>
+</section>
+<section id="result" class="panel result hidden"><div class="kicker" style="color:#2457d6">Quiz complete</div><h1>Your Result</h1><div id="score" class="score"></div><p id="message"></p><button id="retry" class="primary">Try again</button><div class="review"><h2>Answer review</h2><ol id="review"></ol></div></section>
+<div class="footer">Java OOP Project Quiz • Learn, practice, and improve</div>
+</div>
+<script>
+const qs=[
+{topic:"Encapsulation",q:"What is encapsulation in Java?",o:["Combining data and methods in one class and controlling access to them","Creating many classes with the same name","Running code without compiling","Hiding every method from all classes"],a:0,e:"Encapsulation bundles data and related methods in a class and controls access, often with private fields and public methods."},
+{topic:"Encapsulation",q:"Which access modifier is commonly used to protect a class's data from direct outside access?",o:["public","private","static","final"],a:1,e:"Private fields cannot be accessed directly from unrelated classes; controlled access can be provided through methods."},
+{topic:"Encapsulation",q:"Why might a class provide getter and setter methods?",o:["To make every variable global","To avoid creating objects","To read or update private data in a controlled way","To make Java code run without a JVM"],a:2,e:"Getters and setters can control how private data is read or changed, including validation."},
+{topic:"Abstraction",q:"What is abstraction mainly about?",o:["Showing every implementation detail","Hiding implementation details and exposing essential features","Making all variables public","Writing a program without classes"],a:1,e:"Abstraction focuses on what an object does while hiding unnecessary details about how it does it."},
+{topic:"Abstraction",q:"Which Java feature can be used to define an abstract class?",o:["abstract keyword","private keyword","package keyword","break keyword"],a:0,e:"The abstract keyword declares an abstract class or an abstract method."},
+{topic:"Abstraction",q:"Which statement about an interface is correct?",o:["An interface can never be implemented","An interface is used only to store object data","A class can implement an interface and provide its required behavior","An interface must be created with new"],a:2,e:"A class implements an interface and supplies implementations for its abstract methods, as required."},
+{topic:"Dynamic Message Passing",q:"In object-oriented programming, dynamic method dispatch means that the method implementation is chosen at runtime based on the…",o:["Variable's name","Actual object's class","Number of comments","File's location"],a:1,e:"For an overridden instance method, Java chooses the implementation according to the actual object's runtime class."},
+{topic:"Dynamic Message Passing",q:"Which OOP concept is most closely associated with dynamic method dispatch in Java?",o:["Polymorphism","Compilation error handling","Encapsulation only","Package importing"],a:0,e:"Runtime polymorphism lets a superclass reference call an overridden method of a subclass."},
+{topic:"Dynamic Message Passing",q:"What is the output?\nclass Animal { void sound(){System.out.print(\"Animal\");} }\nclass Dog extends Animal { void sound(){System.out.print(\"Dog\");} }\nAnimal a = new Dog(); a.sound();",o:["Animal","Dog","AnimalDog","Compilation always fails"],a:1,e:"The reference type is Animal, but the object is Dog, so the overridden Dog.sound() runs."},
+{topic:"All three concepts",q:"Which option correctly matches the concept to its purpose?",o:["Encapsulation—controlled data access; Abstraction—hide implementation details; Dynamic dispatch—select overridden method at runtime","Encapsulation—runtime method selection; Abstraction—make all fields public; Dynamic dispatch—hide data","All three mean the same thing","Abstraction—create variables only"],a:0,e:"These are related but distinct ideas: controlled access, essential features without implementation detail, and runtime selection of overridden methods."}
+];
+let index=0,answers=Array(qs.length).fill(null),checked=Array(qs.length).fill(false);
+const $=id=>document.getElementById(id);
+function render(){
+ const q=qs[index];$("topic").textContent=`Question ${index+1} of ${qs.length} • ${q.topic}`;$("answered").textContent=`${answers.filter(x=>x!==null).length} answered`;$("fill").style.width=`${(index/qs.length)*100}%`;$("question").textContent=q.q;
+ $("options").innerHTML="";q.o.forEach((t,i)=>{const b=document.createElement("button");b.className="opt"+(answers[index]===i?" selected":"");b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}.</span><span></span>`;b.querySelector("span:last-child").textContent=t;b.onclick=()=>{answers[index]=i;checked[index]=false;render()};$("options").appendChild(b)});
+ $("feedback").className="feedback hidden";$("prev").disabled=index===0;$("next").disabled=answers[index]===null;$("next").textContent=index===qs.length-1?"Finish quiz":"Next question";
+ if(checked[index])showFeedback();
+}
+function showFeedback(){const q=qs[index],fb=$("feedback");fb.className="feedback "+(answers[index]===q.a?"good":"bad");fb.textContent=(answers[index]===q.a?"Correct! ":"Not quite. Correct answer: "+String.fromCharCode(65+q.a)+". "+q.o[q.a]+". ")+q.e;}
+$("next").onclick=()=>{if(answers[index]===null)return;checked[index]=true;showFeedback();if(index<qs.length-1){index++;render()}else finish()};
+$("prev").onclick=()=>{if(index>0){index--;render()}};
+function finish(){let score=answers.reduce((s,a,i)=>s+(a===qs[i].a?1:0),0);$("quiz").classList.add("hidden");$("result").classList.remove("hidden");$("fill").style.width="100%";$("score").textContent=`${score} / ${qs.length}`;$("message").textContent=score===10?"Excellent! You have mastered these OOP basics.":score>=7?"Great work! Review the explanations below to strengthen your understanding.":score>=4?"Good attempt. Read the explanations and try again to improve your score.":"Keep practising—you can try again after reviewing the concepts.";const r=$("review");r.innerHTML="";qs.forEach((q,i)=>{const li=document.createElement("li");li.textContent=`${q.q} — Correct: ${String.fromCharCode(65+q.a)}. ${q.o[q.a]} Your answer: ${answers[i]===null?"Not answered":String.fromCharCode(65+answers[i])}.`;r.appendChild(li)})}
+$("retry").onclick=()=>{index=0;answers=Array(qs.length).fill(null);checked=Array(qs.length).fill(false);$("result").classList.add("hidden");$("quiz").classList.remove("hidden");render();window.scrollTo({top:0,behavior:"smooth"})};
+render();
+</script>
+</body>
+</html>
